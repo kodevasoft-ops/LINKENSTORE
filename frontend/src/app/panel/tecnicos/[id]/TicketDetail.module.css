@@ -1,0 +1,56 @@
+.back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); margin-bottom: 16px; }
+.back:hover { color: var(--txt); }
+
+.headRow { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; flex-wrap: wrap; gap: 10px; }
+.ticketNum { font-family: var(--font-mono); font-size: 20px; font-weight: 800; }
+.subtitle { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+
+.section { background: var(--card); border: 1px solid var(--bdr2); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+.sectionTitle { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 14px; }
+
+.infoRow { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px solid var(--bdr2); }
+.infoRow:last-child { border-bottom: none; }
+.infoRow span:first-child { color: var(--muted); }
+
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field label { font-size: 12px; color: var(--muted); }
+.field select, .field input, .field textarea {
+  padding: 11px 14px; border-radius: 10px; background: var(--surf); border: 1px solid var(--bdr2);
+  color: var(--txt); font-size: 14px; font-family: inherit;
+}
+
+.saveBtn { padding: 11px 20px; border-radius: 10px; background: var(--y); color: #000; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; }
+.assignBtn { padding: 9px 14px; border-radius: 9px; background: var(--surf); border: 1px solid var(--bdr2); color: var(--txt); font-weight: 700; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; }
+
+.partsList { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.partRow { display: flex; justify-content: space-between; font-size: 13px; padding: 8px 10px; background: var(--surf); border-radius: 8px; }
+.addPartRow { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 8px; }
+.addPartRow input { padding: 9px 10px; border-radius: 8px; background: var(--surf); border: 1px solid var(--bdr2); color: var(--txt); font-size: 13px; }
+.addPartBtn { background: var(--y); color: #000; border-radius: 8px; padding: 0 12px; font-weight: 700; }
+
+.imagesGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+@media (max-width: 500px) { .imagesGrid { grid-template-columns: repeat(2, 1fr); } }
+.imageSlot { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--bg3); border: 1px solid var(--bdr2); }
+.imageSlot img { width: 100%; height: 100%; object-fit: cover; }
+.uploadSlot {
+  aspect-ratio: 1; border-radius: 10px; border: 2px dashed var(--bdr2); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 6px; color: var(--muted); font-size: 11px; cursor: pointer;
+}
+.uploadSlot:hover { border-color: var(--y); color: var(--y); }
+
+.readOnlyNote {
+  font-size: 12px; color: var(--muted); background: var(--surf); border-radius: 10px;
+  padding: 12px 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+}
+
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 900; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(6px); }
+.modal { background: var(--bg2); border: 1px solid var(--bdr); border-radius: 18px; padding: 24px; width: 100%; max-width: 360px; }
+.modal h3 { font-size: 15px; font-weight: 800; margin-bottom: 14px; }
+.techOption {
+  padding: 10px 12px; border-radius: 9px; background: var(--surf); margin-bottom: 8px; font-size: 13px;
+  cursor: pointer; display: flex; justify-content: space-between;
+}
+.techOption:hover { background: var(--y); color: #000; }

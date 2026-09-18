@@ -1,0 +1,60 @@
+.overlay {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); z-index: 900;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s; backdrop-filter: blur(6px);
+}
+.overlay.on { opacity: 1; pointer-events: all; }
+
+.box {
+  background: var(--bg2); border: 1px solid var(--bdr); border-radius: 20px;
+  width: 100%; max-width: 390px; padding: 32px; position: relative;
+  transform: translateY(20px); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.overlay.on .box { transform: translateY(0); }
+
+.closeBtn {
+  position: absolute; top: 12px; right: 12px; width: 30px; height: 30px;
+  background: var(--surf); border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; color: var(--muted);
+}
+.closeBtn:hover { background: var(--y); color: #000; }
+
+.head { text-align: center; margin-bottom: 22px; }
+.head h2 { font-size: 18px; font-weight: 800; }
+
+.tabs { display: flex; gap: 6px; background: var(--surf); border-radius: 12px; padding: 4px; margin-bottom: 20px; }
+.tab { flex: 1; padding: 9px; border-radius: 9px; font-size: 13px; font-weight: 700; color: var(--muted); text-align: center; }
+.tab.on { background: var(--y); color: #000; }
+
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field label { font-size: 12px; color: var(--muted); }
+.field input {
+  padding: 12px 14px; border-radius: 10px; background: var(--surf); border: 1px solid var(--bdr2);
+  color: var(--txt); font-size: 14px; font-family: inherit;
+}
+.field input:focus { border-color: var(--y); }
+
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.error {
+  display: flex; align-items: center; gap: 8px; font-size: 12px; color: #ef4444;
+  background: rgba(239, 68, 68, 0.1); border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;
+}
+
+.submitBtn {
+  width: 100%; padding: 13px; border-radius: 12px; background: var(--y); color: #000;
+  font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.submitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.divider {
+  display: flex; align-items: center; gap: 12px; margin: 18px 0; color: var(--muted); font-size: 11px;
+}
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--bdr2); }
+
+.googleBtn {
+  width: 100%; padding: 12px; border-radius: 10px; background: var(--surf); border: 1px solid var(--bdr2);
+  color: var(--txt); font-weight: 700; font-size: 13px; display: flex; align-items: center;
+  justify-content: center; gap: 10px;
+}
+.googleBtn:hover { background: var(--card2); border-color: var(--y); }

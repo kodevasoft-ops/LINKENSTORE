@@ -1,0 +1,43 @@
+.statusBanner {
+  display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-radius: 14px; margin-bottom: 24px;
+}
+.statusBanner.paused { background: rgba(255,159,10,0.1); border: 1px solid rgba(255,159,10,0.3); }
+.statusBanner.active { background: rgba(52,199,89,0.1); border: 1px solid rgba(52,199,89,0.3); }
+.statusText strong { display: block; font-size: 14px; }
+.statusText span { font-size: 12px; color: var(--muted); }
+
+.section { background: var(--card); border: 1px solid var(--bdr2); border-radius: 16px; padding: 22px; margin-bottom: 16px; }
+.sectionTitle { font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 16px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field label { font-size: 12px; color: var(--muted); }
+.field input {
+  padding: 11px 14px; border-radius: 10px; background: var(--surf); border: 1px solid var(--bdr2);
+  color: var(--txt); font-size: 14px; font-family: var(--font-mono);
+}
+
+.toggleRow {
+  display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--bdr2);
+}
+.toggleRow:last-child { border-bottom: none; }
+.toggleInfo strong { display: block; font-size: 13px; }
+.toggleInfo span { font-size: 11px; color: var(--muted); }
+.switch { width: 40px; height: 22px; border-radius: 11px; background: var(--surf); position: relative; cursor: pointer; flex-shrink: 0; }
+.switch.on { background: var(--y); }
+.switchDot { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: var(--txt); transition: var(--tr); }
+.switch.on .switchDot { left: 20px; background: #000; }
+
+.delayInput {
+  width: 70px; padding: 6px 8px; border-radius: 7px; background: var(--surf); border: 1px solid var(--bdr2);
+  color: var(--txt); font-size: 12px; text-align: center;
+}
+
+.warningBox {
+  display: flex; align-items: flex-start; gap: 10px; background: rgba(255,159,10,0.1);
+  border: 1px solid rgba(255,159,10,0.3); border-radius: 10px; padding: 12px 14px;
+  font-size: 12px; color: #ff9f0a; margin-bottom: 16px;
+}
+
+.saveBtn { padding: 11px 20px; border-radius: 10px; background: var(--y); color: #000; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; }
+.activateBtn { padding: 11px 20px; border-radius: 10px; background: #34c759; color: #000; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; }
+.pauseBtn { padding: 11px 20px; border-radius: 10px; background: #ef4444; color: #fff; font-weight: 800; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; }

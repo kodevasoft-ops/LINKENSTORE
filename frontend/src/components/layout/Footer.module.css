@@ -1,0 +1,117 @@
+.footer {
+  background: var(--footer-bg);
+  color: #8888aa;
+}
+
+.ftrMain {
+  padding: 32px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.ftrGrid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr;
+  gap: 28px;
+}
+@media (max-width: 900px) {
+  .ftrGrid { grid-template-columns: 1fr 1fr; }
+  .ftrMain { padding: 20px 0; }
+}
+@media (max-width: 560px) {
+  .ftrGrid { grid-template-columns: 1fr; }
+  .ftrMain { padding: 16px 0; }
+  .ftrCol { margin-bottom: 16px; }
+}
+
+.brandName {
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 10px;
+}
+@media (max-width: 560px) { .brandName { font-size: 16px; } }
+.brandName em { color: var(--y); font-style: normal; }
+
+.brandDesc {
+  font-size: 12px;
+  color: #8888aa;
+  line-height: 1.75;
+  margin-bottom: 16px;
+  max-width: 320px;
+}
+@media (max-width: 560px) { .brandDesc { line-height: 1.4; } }
+
+.socs { display: flex; gap: 7px; }
+@media (max-width: 560px) { .socs { gap: 10px; } }
+.soc {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8888aa;
+  transition: var(--tr);
+}
+.soc:hover { background: var(--y); color: #000; }
+
+.colHead {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--y);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  font-family: var(--font-mono);
+}
+.link {
+  display: block;
+  font-size: 12px;
+  color: #8888aa;
+  padding: 4px 0;
+  transition: color var(--tr);
+}
+.link:hover { color: var(--y); }
+
+.contactItem { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 9px; }
+.contactIcon { color: var(--y); flex-shrink: 0; margin-top: 2px; }
+.contactText { font-size: 12px; color: #8888aa; line-height: 1.5; }
+@media (max-width: 560px) { .contactText { font-size: 12px; } }
+
+.waBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #25d366;
+  color: #fff;
+  padding: 9px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 12px;
+  transition: background var(--tr);
+}
+.waBtn:hover { background: #1fb855; }
+@media (max-width: 560px) { .waBtn { font-size: 12px; padding: 10px; } }
+
+.ftrBot { padding: 16px 0; }
+.payRow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.payLabel { font-size: 11px; color: #8888aa; }
+.payBadge {
+  background: rgba(255, 255, 255, 0.07);
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #8888aa;
+}
+.copy { font-size: 12px; color: #8888aa; }
+.copy a { color: #8888aa; text-decoration: underline; }

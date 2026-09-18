@@ -1,0 +1,215 @@
+version: "3.9"
+
+x-env: &env
+  DJANGO_SECRET_KEY:     ${DJANGO_SECRET_KEY}
+  DEBUG:                 "False"
+  ALLOWED_HOSTS:         ${ALLOWED_HOSTS:-localhost,127.0.0.1}
+  DB_NAME:               ${DB_NAME:-katalog}
+  DB_USER:               postgres
+  DB_PASSWORD:           Admin3312
+  DB_HOST:               postgres
+  DB_PORT:               "5432"
+  REDIS_URL:             redis://redis:6379/0
+  CELERY_BROKER_URL:     redis://redis:6379/3
+  CELERY_RESULT_BACKEND: redis://redis:6379/4
+  CORS_ORIGINS:          ${CORS_ORIGINS:-http://localhost:3000}
+  FRONTEND_URL:          ${FRONTEND_URL:-http://localhost:3000}
+  DEFAULT_FROM_EMAIL:    ${DEFAULT_FROM_EMAIL:-noreply@katalog.com}
+  # Wompi
+  WOMPI_PUBLIC_KEY:       ${WOMPI_PUBLIC_KEY:-}
+  WOMPI_PRIVATE_KEY:      ${WOMPI_PRIVATE_KEY:-}
+  WOMPI_INTEGRITY_SECRET: ${WOMPI_INTEGRITY_SECRET:-}
+  WOMPI_EVENTS_SECRET:    ${WOMPI_EVENTS_SECRET:-}
+  WOMPI_API_URL:          ${WOMPI_API_URL:-https://production.wompi.co/v1}
+  # TNS
+  TNS_API_URL:           ${TNS_API_URL:-}
+  TNS_API_KEY:           ${TNS_API_KEY:-}
+  TNS_HMAC_SECRET:       ${TNS_HMAC_SECRET:-}
+  # Cloudflare R2
+  R2_ACCESS_KEY_ID:      ${R2_ACCESS_KEY_ID:-}
+  R2_SECRET_ACCESS_KEY:  ${R2_SECRET_ACCESS_KEY:-}
+  R2_BUCKET_NAME:        ${R2_BUCKET_NAME:-}
+  R2_ACCOUNT_ID:         ${R2_ACCOUNT_ID:-}
+  R2_PUBLIC_DOMAIN:      ${R2_PUBLIC_DOMAIN:-}
+  # Sentry
+  SENTRY_DSN:            ${SENTRY_DSN:-}
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       ${DB_NAME:-katalog}
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: Admin3312
+    command: >
+      postgres
+        -c max_connections=200
+        -c shared_buffers=512MB
+        -c effective_cache_size=1536MB
+        -c work_mem=4MB
+        -c maintenance_work_mem=128MB
+        -c wal_buffers=16MB
+        -c checkpoint_completion_target=0.9
+        -c random_page_cost=1.1
+        -c effective_io_concurrency=200
+        -c log_min_duration_statement=200
+        -c log_checkpoints=on
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ${DB_NAME:-katalog}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [katalog]
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: >
+      redis-server
+        --maxmemory 512mb
+        --maxmemory-policy allkeys-lru
+        --save 900 1
+        --save 300 10
+        --appendonly yes
+        --appendfsync everysec
+        --tcp-keepalive 300
+        --timeout 0
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [katalog]
+
+  web:
+    build: ./backend
+    restart: unless-stopped
+    command: >
+      sh -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn katalog.wsgi:application --bind 0.0.0.0:8000 --workers 9 --worker-class gthread --threads 4 --timeout 60 --graceful-timeout 30 --keep-alive 5 --max-requests 1000 --max-requests-jitter 100 --preload --access-logfile - --error-logfile -"
+    environment: *env
+    volumes:
+      - static_files:/app/staticfiles
+      - media_files:/app/media
+    expose: ["8000"]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/health/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis:    {condition: service_healthy}
+    networks: [katalog]
+
+  ws:
+    build: ./backend
+    restart: unless-stopped
+    command: daphne -b 0.0.0.0 -p 8001 --proxy-headers katalog.asgi:application
+    environment: *env
+    expose: ["8001"]
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis:    {condition: service_healthy}
+    networks: [katalog]
+
+  celery:
+    build: ./backend
+    restart: unless-stopped
+    command: >
+      celery -A katalog worker
+        --loglevel=info
+        --concurrency=8
+        --max-tasks-per-child=500
+        --max-memory-per-child=200000
+        -Q default,celery,analytics,email
+    environment: *env
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis:    {condition: service_healthy}
+    networks: [katalog]
+
+  celery-beat:
+    build: ./backend
+    restart: unless-stopped
+    command: celery -A katalog beat --loglevel=info
+    environment: *env
+    depends_on:
+      postgres: {condition: service_healthy}
+      redis:    {condition: service_healthy}
+    networks: [katalog]
+
+  flower:
+    build: ./backend
+    restart: unless-stopped
+    command: celery -A katalog flower --port=5555 --basic_auth=${FLOWER_USER:-admin}:${FLOWER_PASSWORD:-changeme}
+    environment: *env
+    expose: ["5555"]
+    depends_on: [redis]
+    networks: [katalog]
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - static_files:/app/staticfiles:ro
+      - media_files:/app/media:ro
+      - certbot_www:/var/www/certbot:ro
+      - certbot_conf:/etc/letsencrypt:ro
+      - nginx_cache:/var/cache/nginx
+    depends_on: [web, ws, frontend]
+    networks: [katalog]
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL:         ${NEXT_PUBLIC_API_URL:-http://localhost}
+        NEXT_PUBLIC_WOMPI_PUBLIC_KEY: ${WOMPI_PUBLIC_KEY:-}
+        NEXT_PUBLIC_SITE_URL:        ${NEXT_PUBLIC_SITE_URL:-http://localhost}
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_URL:      ${NEXT_PUBLIC_API_URL:-http://web:8000}
+      NEXT_PUBLIC_WOMPI_PUBLIC_KEY: ${WOMPI_PUBLIC_KEY:-}
+      NEXT_PUBLIC_SITE_URL:     ${NEXT_PUBLIC_SITE_URL:-http://localhost}
+      MEDIA_DOMAIN:             ${R2_PUBLIC_DOMAIN:-}
+      NEXTAUTH_SECRET:          ${NEXTAUTH_SECRET}
+      NEXTAUTH_URL:             ${NEXTAUTH_URL:-http://localhost:3000}
+      GOOGLE_CLIENT_ID:         ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET:     ${GOOGLE_CLIENT_SECRET:-}
+    ports:
+      - "3000:3000"
+    depends_on: [web]
+    networks: [katalog]
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_files:
+  media_files:
+  certbot_www:
+  certbot_conf:
+  nginx_cache:
+
+networks:
+  katalog:
+    driver: bridge

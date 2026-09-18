@@ -1,0 +1,35 @@
+.head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+
+.tabs { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 4px; }
+.tab {
+  padding: 8px 14px; border-radius: 9px; font-size: 12px; font-weight: 700; white-space: nowrap;
+  background: var(--surf); color: var(--muted); display: flex; align-items: center; gap: 6px;
+}
+.tab.active { background: var(--y); color: #000; }
+.tab .badge { background: rgba(0,0,0,0.15); border-radius: 5px; padding: 1px 6px; font-size: 10px; }
+
+.list { display: flex; flex-direction: column; gap: 10px; }
+.card {
+  background: var(--card); border: 1px solid var(--bdr2); border-radius: 12px; padding: 14px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+}
+.cardLeft { display: flex; flex-direction: column; gap: 4px; }
+.ticketNum { font-family: var(--font-mono); font-weight: 700; font-size: 13px; }
+.device { font-size: 13px; }
+.customer { font-size: 12px; color: var(--muted); }
+
+.statusPill { font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 5px 10px; border-radius: 7px; white-space: nowrap; }
+.st_received { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+.st_diagnosis { background: rgba(255, 159, 10, 0.15); color: #ff9f0a; }
+.st_in_progress { background: rgba(173, 173, 3, 0.15); color: var(--y); }
+.st_waiting_part { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+.st_ready { background: rgba(52, 199, 89, 0.15); color: #34c759; }
+.st_delivered { background: rgba(120, 120, 140, 0.15); color: var(--muted); }
+.st_cancelled { background: rgba(120, 120, 140, 0.1); color: var(--muted); }
+
+.technicianTag { font-size: 11px; color: var(--muted); }
+
+.empty { text-align: center; padding: 60px 20px; color: var(--muted); }
+.pagination { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 24px; }
+.pageBtn { width: 36px; height: 36px; border-radius: 8px; background: var(--surf); display: flex; align-items: center; justify-content: center; }
+.pageBtn:disabled { opacity: 0.4; cursor: not-allowed; }

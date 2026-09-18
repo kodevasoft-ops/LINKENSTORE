@@ -1,0 +1,85 @@
+/* ══════════════════════════════════════════
+   TOKENS DE DISEÑO — portados de style.css
+   Misma identidad visual, ahora la única fuente de verdad.
+══════════════════════════════════════════ */
+:root {
+  --y: #adad03;
+  --tr: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-display: 'Outfit', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+
+[data-theme='dark'] {
+  --bg: #08080f;
+  --bg2: #0d0d18;
+  --bg3: #121220;
+  --card: #161626;
+  --card2: #1c1c30;
+  --surf: #22223a;
+  --bdr: rgba(244, 245, 0, 0.1);
+  --bdr2: rgba(255, 255, 255, 0.07);
+  --txt: #e8e8f4;
+  --muted: #6868a0;
+  --white: #fff;
+  --sh: 0 4px 24px rgba(0, 0, 0, 0.55);
+  --sh2: 0 12px 48px rgba(0, 0, 0, 0.7);
+  --header-bg: rgba(8, 8, 15, 0.96);
+  --footer-bg: #0d0d18;
+  --input-bg: #22223a;
+  --input-bdr: rgba(255, 255, 255, 0.07);
+  --trust-bg: #121220;
+  --modal-bg: #0d0d18;
+}
+
+[data-theme='light'] {
+  --bg: #f5f5f7;
+  --bg2: #ffffff;
+  --bg3: #ebebf0;
+  --card: #ffffff;
+  --card2: #f0f0f5;
+  --surf: #e8e8f0;
+  --bdr: rgba(244, 245, 0, 0.5);
+  --bdr2: rgba(0, 0, 0, 0.08);
+  --txt: #1a1a2e;
+  --muted: #5555aa;
+  --white: #1a1a2e;
+  --sh: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --sh2: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --header-bg: rgba(255, 255, 255, 0.97);
+  /* El footer SIEMPRE es oscuro, incluso en tema claro — así está en el diseño original */
+  --footer-bg: #1a1a2e;
+  --input-bg: #f0f0f5;
+  --input-bdr: rgba(0, 0, 0, 0.1);
+  --trust-bg: #ebebf0;
+  --modal-bg: #ffffff;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-display);
+  background: var(--bg);
+  color: var(--txt);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s, color 0.3s;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; object-fit: cover; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+.wrap { max-width: 1340px; margin: 0 auto; padding: 0 20px; }
+
+/* Foco visible — accesibilidad, nunca se elimina */
+:focus-visible {
+  outline: 2px solid var(--y);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

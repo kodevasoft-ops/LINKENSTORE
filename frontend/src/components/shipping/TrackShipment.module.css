@@ -1,0 +1,23 @@
+.box {
+  background: var(--card); border: 1px solid var(--bdr2); border-radius: 20px;
+  padding: 26px; margin-top: 20px;
+}
+.head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.head h3 { font-size: 15px; font-weight: 800; }
+
+.form { display: flex; gap: 10px; }
+.input {
+  flex: 1; padding: 12px 14px; border-radius: 10px; background: var(--surf);
+  border: 1px solid var(--bdr2); color: var(--txt); font-size: 14px; font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+.btn {
+  padding: 12px 20px; border-radius: 10px; background: var(--y); color: #000;
+  font-weight: 800; font-size: 13px; display: flex; align-items: center; gap: 8px; white-space: nowrap;
+}
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.result { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--bdr2); }
+.resultRow { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; }
+.resultRow span:first-child { color: var(--muted); }
+.error { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #ef4444; margin-top: 14px; }
